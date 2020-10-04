@@ -13,6 +13,7 @@ type Pictures struct {
 	PictureUrl string `json:"picture_url"`
 	IsFlagged  bool   `json:"is_flagged"`
 	CustomTime string `json:"custom_time"`
+	Metadata string `json:"metadata"`
 }
 
 func GetPictures(c *fiber.Ctx) error {
@@ -51,12 +52,14 @@ func SaveNewPicture(c *fiber.Ctx) error {
 	log.Println("SaveNewPicture()")
 	params := new(struct {
 		PictureUrl string `json:"picture_url"`
+		Metadata string `json:"metadata"`
 	})
 	c.BodyParser(&params)
 	db := base.DB
 	var picture Pictures
 	firstPicture := getFirstUser()
 	picture.PictureUrl = params.PictureUrl
+	picture.Metadata = params.Metadata
 	picture.IsFlagged = false
 	picture.CustomTime = firstPicture.CreatedAt.String()
 	db.Create(&picture)
