@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gofiber/fiber/v2"
@@ -17,10 +17,10 @@ func initializeDB() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("DB connection successful!")
+	log.Println("DB connection successful!")
 
 	base.DB.AutoMigrate(&models.Pictures{})
-	fmt.Println("Database Migrated")
+	log.Println("Database Migrated")
 
 }
 

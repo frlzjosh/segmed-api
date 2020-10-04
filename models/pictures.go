@@ -14,6 +14,7 @@ type Pictures struct {
 	IsFlagged  bool   `json:"is_flagged"`
 	CustomTime string `json:"custom_time"`
 	Metadata string `json:"metadata"`
+	TimeFlagged int `json:"times_flagged"`
 }
 
 func GetPictures(c *fiber.Ctx) error {
@@ -36,6 +37,7 @@ func FlagPicture(c *fiber.Ctx) error {
 		picture.CustomTime = firstPicture.CreatedAt.String()
 	} else {
 		picture.CustomTime = picture.UpdatedAt.String()
+		picture.TimeFlagged = picture.TimeFlagged+1
 	}
 	db.Save(&picture)
 	return c.Status(fiber.StatusOK).JSON(picture)
@@ -62,6 +64,7 @@ func SaveNewPicture(c *fiber.Ctx) error {
 	picture.Metadata = params.Metadata
 	picture.IsFlagged = false
 	picture.CustomTime = firstPicture.CreatedAt.String()
+	picture.TimeFlagged = 0
 	db.Create(&picture)
 	return c.Status(fiber.StatusOK).JSON(picture)
 }
