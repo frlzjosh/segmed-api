@@ -32,10 +32,14 @@ func initRoutes(app *fiber.App) {
 }
 
 func main() {
+
 	app := fiber.New()
 	app.Use(cors.New())
 	initializeDB()
 	defer base.DB.Close()
 	initRoutes(app)
-	app.Listen(":3000")
+	err := app.Listen(":3000")
+	if err != nil {
+		log.Println(err)
+	}
 }
